@@ -1,4 +1,3 @@
-
 import React, { useState } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
 import { 
@@ -14,11 +13,21 @@ import {
   Award,
   Languages,
   Globe,
-  Layout
+  Layout,
+  MessageSquareLock,
+  Lock,
+  Eye,
+  Zap,
+  ShoppingBasket,
+  BookOpen,
+  Anchor,
+  CircleDot
 } from 'lucide-react';
 import StarField from './components/StarField.tsx';
 import LoadingScreen from './components/LoadingScreen.tsx';
 import { LotusIcon, ChakraIcon } from './components/Icons.tsx';
+import { getSacredInsight } from './services/geminiService.ts';
+import EncryptedChat from './components/EncryptedChat.tsx';
 
 const DESTINATION_URL = "https://astro21.io";
 
@@ -26,12 +35,32 @@ const App: React.FC = () => {
   const [isLoading, setIsLoading] = useState(true);
   const [birthDate, setBirthDate] = useState('');
   const [showModal, setShowModal] = useState(false);
-  const [modalType, setModalType] = useState<'prediction' | 'shop' | 'pooja' | 'language'>('prediction');
+  const [modalType, setModalType] = useState<'insight' | 'shop' | 'pooja' | 'language' | 'chat'>('insight');
   const [selectedLang, setSelectedLang] = useState('English');
+  const [sacredInsight, setSacredInsight] = useState<string | null>(null);
+  const [isAligning, setIsAligning] = useState(false);
+  const [showChat, setShowChat] = useState(false);
 
-  const handleAction = (type: 'prediction' | 'shop' | 'pooja' | 'language') => {
+  const handleAction = (type: 'insight' | 'shop' | 'pooja' | 'language' | 'chat') => {
     setModalType(type);
-    setShowModal(true);
+    if (type === 'chat') {
+      setShowChat(true);
+    } else {
+      setShowModal(true);
+    }
+  };
+
+  const handleAlignDestiny = async (e: React.FormEvent) => {
+    e.preventDefault();
+    if (!birthDate) return;
+    
+    setIsAligning(true);
+    setSacredInsight(null);
+    handleAction('insight');
+    
+    const result = await getSacredInsight(birthDate);
+    setSacredInsight(result);
+    setIsAligning(false);
   };
 
   const handleExternalRedirect = () => {
@@ -41,7 +70,7 @@ const App: React.FC = () => {
   const languages = ['English', 'हिन्दी', 'தமிழ்', 'తెలుగు', 'मराठी', 'বাংলা', 'ગુજરાતી'];
 
   return (
-    <div className="min-h-screen text-white font-sans selection:bg-astro-saffron/30 overflow-x-hidden">
+    <div className="min-h-screen text-white font-sans selection:bg-astro-saffron/30 overflow-x-hidden bg-astro-indigo">
       <AnimatePresence>
         {isLoading && (
           <LoadingScreen key="loader" onLoadingComplete={() => setIsLoading(false)} />
@@ -61,94 +90,84 @@ const App: React.FC = () => {
         
         <nav className="flex items-center gap-3">
           <button 
-            aria-label="Change Language for Astro21"
+            aria-label="Sanctuary Language"
             onClick={() => handleAction('language')}
-            className="flex items-center gap-1.5 bg-white/5 border border-white/10 px-3 py-1.5 rounded-full text-[10px] font-bold text-gray-400 hover:text-astro-gold hover:border-astro-gold/30 transition-all"
+            className="flex items-center gap-1.5 bg-white/5 border border-white/10 px-3 py-1.5 rounded-full text-[10px] font-bold text-gray-400 hover:text-astro-gold transition-all"
           >
             <Globe className="w-3.5 h-3.5" />
             <span className="hidden sm:inline">{selectedLang}</span>
           </button>
           <button 
-            aria-label="Enter Astro21 Astrology Portal"
-            onClick={() => handleAction('prediction')}
-            className="bg-gradient-to-r from-astro-saffron to-orange-600 text-white px-4 sm:px-6 py-2 rounded-full text-[10px] font-black saffron-glow transition-all duration-300 active:scale-95 uppercase tracking-tighter"
+            onClick={handleExternalRedirect}
+            className="bg-gradient-to-r from-astro-saffron to-orange-600 text-white px-5 py-2 rounded-full text-[10px] font-black saffron-glow uppercase tracking-tighter"
           >
-            Enter Portal
+            Get App
           </button>
         </nav>
       </header>
 
       <main className="relative z-10 pt-28 pb-12">
-        {/* Hero Section - SEO H1 Optimized for Best Astrologer */}
-        <section className="px-6 flex flex-col items-center text-center">
+        {/* Hero Section */}
+        <section className="px-6 flex flex-col items-center text-center mb-16">
           <motion.div
             initial={{ opacity: 0, y: 20 }}
             animate={!isLoading ? { opacity: 1, y: 0 } : {}}
             transition={{ duration: 0.8 }}
             className="mb-6"
           >
-            <div className="inline-flex items-center gap-2 bg-astro-saffron/10 border border-astro-saffron/30 px-4 py-1.5 rounded-full text-astro-saffron text-[10px] font-bold tracking-[0.2em] mb-6 uppercase">
-              <Award className="w-3 h-3" /> Best Vedic Astrology Portal in India
-            </div>
             <h1 className="font-serif text-4xl md:text-6xl mb-4 leading-[1.1] tracking-tight">
-              Instant Vedic Solutions <br />
-              <span className="text-transparent bg-clip-text bg-gradient-to-b from-astro-saffron to-astro-gold italic">To Your Life Problems</span>
+              Decode Your Cosmic Code <br />
+              <span className="text-transparent bg-clip-text bg-gradient-to-b from-astro-saffron to-astro-gold italic font-bold">Starting at Rs 21*</span>
             </h1>
             <p className="text-gray-400 text-base max-w-[340px] mx-auto font-light leading-relaxed">
-              Experience ancient wisdom through <strong>Astro21 Kundli GPT</strong>. Get deep life insights in <span className="text-astro-saffron font-medium">10+ Regional Languages</span> instantly.
+              Experience the future of Vedic wisdom. Discover your divine path through <strong>Sacred Geometry</strong>.
             </p>
           </motion.div>
 
-          {/* Sacred Visualizer (Aesthetic Centering) */}
+          {/* Central Animated Element */}
           <div className="relative w-64 h-64 flex items-center justify-center mb-8 scale-90 sm:scale-100" aria-hidden="true">
             <motion.div
               animate={{ rotate: 360 }}
-              transition={{ duration: 50, repeat: Infinity, ease: "linear" }}
+              transition={{ duration: 60, repeat: Infinity, ease: "linear" }}
               className="absolute inset-0 text-astro-saffron/10"
             >
               <LotusIcon className="w-full h-full" />
             </motion.div>
             
-            <div className="absolute inset-0 flex items-center justify-center opacity-20">
-               <div className="w-56 h-56 rounded-full border border-astro-gold/20 animate-pulse" />
-            </div>
-
             <motion.div
               animate={{ 
-                rotate: -360,
-                scale: [1, 1.08, 1]
+                scale: [1, 1.1, 1],
+                opacity: [0.6, 1, 0.6]
               }}
               transition={{ 
-                rotate: { duration: 30, repeat: Infinity, ease: "linear" },
-                scale: { duration: 4, repeat: Infinity, ease: "easeInOut" }
+                duration: 3, 
+                repeat: Infinity, 
+                ease: "easeInOut" 
               }}
-              className="w-32 h-32 text-astro-gold drop-shadow-[0_0_20px_rgba(212,175,55,0.4)]"
+              className="w-32 h-32 text-astro-saffron drop-shadow-[0_0_25px_rgba(255,153,51,0.6)]"
             >
               <ChakraIcon />
             </motion.div>
           </div>
 
-          {/* High Conversion Quick Start Form */}
+          {/* Chat-like Input Field */}
           <motion.div
             initial={{ opacity: 0, scale: 0.95 }}
             animate={!isLoading ? { opacity: 1, scale: 1 } : {}}
             transition={{ delay: 0.4 }}
-            className="w-full max-w-md glass-card p-1 rounded-[2.5rem] relative overflow-hidden group mb-16 shadow-2xl"
+            className="w-full max-w-md glass-card p-1 rounded-[2.5rem] relative overflow-hidden group shadow-2xl"
           >
              <div className="bg-astro-indigo/40 rounded-[2.4rem] p-6 sm:p-8">
-                <form onSubmit={(e) => { e.preventDefault(); handleAction('prediction'); }} className="space-y-4">
-                  <div className="flex items-center justify-between px-2 mb-2">
-                    <span className="text-[10px] font-bold text-astro-gold/50 uppercase tracking-widest tracking-tighter">Verified Astrologer Access</span>
-                    <span className="text-[10px] font-bold text-astro-saffron uppercase tracking-tighter">Reports at ₹21*</span>
+                <form onSubmit={handleAlignDestiny} className="space-y-4">
+                  <div className="flex items-center justify-center mb-2">
+                    <span className="text-[11px] font-bold text-astro-gold uppercase tracking-[0.2em] opacity-60 italic">What is your birth date?</span>
                   </div>
                   <div className="relative">
-                    <label htmlFor="birthDateInput" className="sr-only">Enter Birth Date for Astrology Prediction</label>
                     <input
-                      id="birthDateInput"
                       type="date"
                       value={birthDate}
                       onChange={(e) => setBirthDate(e.target.value)}
-                      className="w-full bg-black/60 border border-astro-gold/10 rounded-2xl py-5 px-6 focus:outline-none focus:border-astro-saffron/50 transition-all text-white appearance-none text-lg font-medium"
+                      className="w-full bg-black/60 border border-astro-gold/10 rounded-2xl py-5 px-6 focus:outline-none focus:border-astro-saffron/50 transition-all text-white appearance-none text-lg font-medium text-center"
                       required
                     />
                     <Calendar className="absolute right-6 top-1/2 -translate-y-1/2 w-5 h-5 text-astro-gold/30 pointer-events-none" />
@@ -157,323 +176,261 @@ const App: React.FC = () => {
                     type="submit"
                     className="w-full bg-gradient-to-r from-astro-saffron to-orange-600 text-white py-5 rounded-2xl font-black text-lg flex items-center justify-center gap-3 saffron-glow transition-all active:scale-[0.98] uppercase tracking-wide"
                   >
-                    Unlock My Future <ArrowRight className="w-5 h-5" />
+                    Start Alignment <ArrowRight className="w-5 h-5" />
                   </button>
                 </form>
              </div>
           </motion.div>
         </section>
 
-        {/* Online Pooja Section - SEO H2 Optimized for Pooja keywords */}
-        <section className="px-6 py-12 space-y-8 max-w-4xl mx-auto">
-          <div>
-            <div className="flex items-center justify-between mb-6 px-2">
-              <h2 className="font-serif text-2xl sm:text-3xl text-white">Best Online Pooja Services</h2>
-              <button onClick={() => handleAction('pooja')} className="text-astro-gold text-xs font-bold uppercase tracking-widest flex items-center gap-1 group">
-                View All Rituals <ArrowRight className="w-3 h-3 group-hover:translate-x-1 transition-transform" />
-              </button>
-            </div>
-            <p className="text-gray-400 text-xs sm:text-sm mb-6 px-2 leading-relaxed">Book authentic <strong>Live Online Pooja</strong> rituals in Haridwar, Banaras, and Rishikesh. Experience personalized Sankalp from any location through the Astro21 unified platform.</p>
-            
-            <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-              <article 
-                className="relative h-64 sm:h-72 rounded-[2rem] overflow-hidden glass-card group cursor-pointer border-astro-gold/20 shadow-xl"
-                onClick={() => handleAction('pooja')}
-              >
-                <img 
-                  src="https://media.istockphoto.com/id/1241318411/photo/divine-ganga-aarti-yagna-at-rishikesh.jpg?s=612x612&w=0&k=20&c=6kyI1QsjTSVMlcv7jews6kKzPndDet7ItLs6G-gUkaA=" 
-                  className="absolute inset-0 w-full h-full object-cover opacity-60 group-hover:scale-105 transition-transform duration-1000" 
-                  alt="Authentic Live Ganga Aarti Ritual Haridwar Booking via Astro21" 
-                />
-                <div className="absolute inset-0 bg-gradient-to-t from-black via-black/30 to-transparent" />
-                <div className="absolute bottom-6 left-6 right-6">
-                  <div className="flex items-center gap-2 text-astro-saffron mb-1">
-                    <MapPin className="w-4 h-4" />
-                    <span className="text-[12px] font-black uppercase tracking-[0.2em]">Haridwar Rituals</span>
-                  </div>
-                  <h3 className="text-xl font-bold mb-1">Live Ganga Aarti</h3>
-                  <p className="text-gray-300 text-[11px] font-medium tracking-wide">Personalized name Sankalp & Live Video stream.</p>
-                </div>
-                <div className="absolute top-4 right-4 bg-astro-saffron text-white text-[10px] font-black px-4 py-1.5 rounded-full animate-pulse shadow-lg">LIVE</div>
-              </article>
-
-              <article 
-                className="relative h-64 sm:h-72 rounded-[2rem] overflow-hidden glass-card group cursor-pointer border-astro-gold/20 shadow-xl"
-                onClick={() => handleAction('pooja')}
-              >
-                <img 
-                  src="https://www.varanasitourspackage.com/blogs/wp-content/uploads/2018/12/kashi-vishwanath.jpg" 
-                  className="absolute inset-0 w-full h-full object-cover opacity-60 group-hover:scale-105 transition-transform duration-1000" 
-                  alt="Kashi Vishwanath Rudrabhishek Online Pooja Banaras via Astro21" 
-                />
-                <div className="absolute inset-0 bg-gradient-to-t from-black via-black/30 to-transparent" />
-                <div className="absolute bottom-6 left-6 right-6">
-                  <div className="flex items-center gap-2 text-astro-saffron mb-1">
-                    <MapPin className="w-4 h-4" />
-                    <span className="text-[12px] font-black uppercase tracking-[0.2em]">Kashi Services</span>
-                  </div>
-                  <h3 className="text-xl font-bold mb-1">Online Rudrabhishek</h3>
-                  <p className="text-gray-300 text-[11px] font-medium tracking-wide">Sacred Banaras rituals with authentic Vedic Acharyas.</p>
-                </div>
-              </article>
-            </div>
-          </div>
-        </section>
-
-        {/* Vedic Marketplace - SEO H2 Optimized for Gemstones */}
-        <section className="px-6 py-12 space-y-8 max-w-4xl mx-auto">
-          <div>
-            <div className="flex items-center justify-between mb-6 px-2">
-              <h2 className="font-serif text-2xl sm:text-3xl text-white">Authentic Vedic Sangrah</h2>
-              <button onClick={() => handleAction('shop')} className="text-astro-gold text-xs font-bold uppercase tracking-widest flex items-center gap-1 group">
-                Enter Store <ShoppingBag className="w-3 h-3 group-hover:-translate-y-0.5 transition-transform" />
-              </button>
-            </div>
-            <p className="text-gray-400 text-xs sm:text-sm mb-8 px-2 leading-relaxed">Your <strong>trusted one-stop shop</strong> for authentic 100% lab-certified gemstones (Pukhraj, Neelam), original Rudraksha, and energized spiritual instruments.</p>
-
-            <div className="grid grid-cols-2 md:grid-cols-4 gap-4 sm:gap-6">
-              {[
-                { 
-                  name: 'Certified Pukhraj', 
-                  type: 'Yellow Sapphire', 
-                  img: 'https://cdn-image.blitzshopdeck.in/ShopdeckCatalogue/tr:f-webp,w-600,fo-auto/6481c21f1b4a80d3f7d48fc1/media/7.25_Ratti__Ceylone_Yellow_Sapphire_Gemstone_Original_Certified_Pukhraj_Stone_Natural_for_Men___Women_6RJTXLL36T_2024-02-12_1.webp' 
-                },
-                { 
-                  name: 'Original Rudraksha', 
-                  type: '5-Mukhi Sacred Bead', 
-                  img: 'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcScNLE27pmV2wpDkkObjRZWgeDkQd_0IINljg&s' 
-                },
-                { 
-                  name: 'Shree Yantra', 
-                  type: 'Energized Instrument', 
-                  img: 'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcRCuhDHPPTcZ4Q3lOFegttv-ml7L0-mfroFIA&s' 
-                },
-                { 
-                  name: 'Premium Kesar', 
-                  type: 'Organic Kashmiri Saffron', 
-                  img: 'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcSYnCo_skIY7TyYlUkiCQfpl_B2f6e3D_zSsQ&s' 
-                }
-              ].map((item, i) => (
-                <article 
-                  key={i}
-                  className="glass-card rounded-[2.2rem] p-4 flex flex-col items-center text-center group cursor-pointer border-astro-gold/10 hover:border-astro-gold/40 transition-all shadow-xl"
-                  onClick={() => handleAction('shop')}
-                >
-                  <div className="w-full aspect-square rounded-[1.6rem] overflow-hidden mb-4 bg-black/40 border border-astro-gold/5 p-1">
-                    <img 
-                      src={item.img} 
-                      className="w-full h-full object-cover rounded-[1.4rem] opacity-70 group-hover:opacity-100 group-hover:scale-110 transition-all duration-700" 
-                      alt={`Original ${item.name} Gemstone available on Astro21 Store`} 
-                    />
-                  </div>
-                  <span className="text-[9px] font-black text-astro-saffron uppercase tracking-[0.2em] mb-1">{item.type}</span>
-                  <h3 className="text-[11px] font-bold text-white mb-2 leading-tight h-8 flex items-center">{item.name}</h3>
-                  <div className="w-12 h-0.5 bg-astro-gold/20 rounded-full mb-2" />
-                  <span className="text-[9px] font-bold text-astro-gold/60 uppercase">Authenticated</span>
-                </article>
-              ))}
-            </div>
-          </div>
-        </section>
-
-        {/* Feature Ecosystem - SEO Context for Service richness */}
-        <section className="px-6 py-12 space-y-6 max-w-xl mx-auto">
+        {/* 1. Feature Cards Section */}
+        <section className="px-6 py-12 max-w-xl mx-auto space-y-6">
           <div className="text-center mb-10">
-            <h2 className="font-serif text-3xl text-white mb-2 uppercase tracking-tight">The Astro21 Ecosystem</h2>
-            <div className="w-16 h-0.5 bg-astro-saffron mx-auto rounded-full mb-4" />
+            <h2 className="font-serif text-2xl text-astro-gold uppercase tracking-widest">Sacred Offerings</h2>
+            <div className="w-12 h-0.5 bg-astro-saffron mx-auto mt-2 opacity-50 rounded-full" />
+            <p className="text-[10px] text-astro-gold/60 uppercase tracking-[0.2em] mt-3 font-bold">Insights starting at Rs 21*</p>
           </div>
 
           {[
-            { 
-              id: '1', 
-              title: 'Online Astrologer Portal', 
-              desc: 'Premium AI Kundli predictions providing instant Vedic solutions to life problems.', 
-              icon: <Sparkles className="w-6 h-6" />,
-              price: '₹21*'
-            },
-            { 
-              id: '2', 
-              title: 'Virtual Ritual Booking', 
-              desc: 'Join holy Ganga Poojas at Kashi & Haridwar via our interactive live platform.', 
-              icon: <Flame className="w-6 h-6" />,
-              price: 'Book'
-            },
-            { 
-              id: '3', 
-              title: 'Vedic Gemstone Store', 
-              desc: 'Premium one-stop shop for certified birthstones and energised spiritual relics.', 
-              icon: <Gem className="w-6 h-6" />,
-              price: 'Enter'
-            },
-            { 
-              id: '4', 
-              title: 'Multilingual Support', 
-              desc: 'Access your future predictions in Hindi, Tamil, Telugu, and 10+ mother tongues.', 
-              icon: <Languages className="w-6 h-6" />,
-              price: 'Native'
-            },
+            { id: 'kundli', title: 'Sacred Kundli', desc: 'Deep alignment of your Janma Patrika using high-precision sacred geometry.', icon: <Eye className="w-6 h-6" /> },
+            { id: 'dosha', title: 'Dosha Analysis', desc: 'Identify and balance spiritual blockages through traditional Vedic methods.', icon: <Zap className="w-6 h-6" /> },
+            { id: 'future', title: 'Future Alignment', desc: 'Glimpse your soul\'s trajectory through the lens of timeless cosmic laws.', icon: <Sparkles className="w-6 h-6" /> },
+            { id: 'chat-feature', title: 'Secured Sanctuary Chat', desc: 'Sacred end-to-end encrypted consultations with verified Sanctuary Acharyas.', icon: <MessageSquareLock className="w-6 h-6" /> },
           ].map((feature) => (
-            <article
+            <motion.article
+              whileInView={{ opacity: 1, y: 0 }}
+              initial={{ opacity: 0, y: 20 }}
               key={feature.id}
-              onClick={() => handleAction(feature.id === '4' ? 'language' : feature.id === '2' ? 'pooja' : feature.id === '3' ? 'shop' : 'prediction')}
-              className="glass-card p-6 rounded-[2rem] flex items-center gap-5 hover:border-astro-gold/30 transition-all duration-500 group cursor-pointer shadow-lg"
+              onClick={() => feature.id === 'chat-feature' ? handleAction('chat') : handleAction('insight')}
+              className="glass-card p-6 rounded-[2.2rem] flex items-center gap-5 group cursor-pointer border-astro-gold/10 hover:border-astro-gold/40 transition-all duration-500 shadow-xl"
             >
-              <div className="bg-gradient-to-br from-astro-saffron/20 to-transparent p-4 rounded-2xl text-astro-saffron border border-astro-saffron/10 group-hover:scale-110 transition-transform">
+              <div className="bg-gradient-to-br from-astro-indigo to-black p-4 rounded-2xl text-astro-gold border border-astro-gold/20 group-hover:scale-110 transition-transform shadow-inner">
                 {feature.icon}
               </div>
               <div className="flex-1">
-                <div className="flex justify-between items-center mb-1">
-                  <h3 className="text-lg font-bold text-white leading-tight">{feature.title}</h3>
-                  <span className="text-[9px] font-black text-astro-gold border border-astro-gold/20 px-2 py-0.5 rounded-full uppercase tracking-tighter">{feature.price}</span>
-                </div>
-                <p className="text-gray-400 text-[11px] leading-tight">{feature.desc}</p>
+                <h3 className="text-lg font-bold text-white mb-1 tracking-tight">{feature.title}</h3>
+                <p className="text-gray-400 text-xs leading-relaxed font-light">{feature.desc}</p>
               </div>
-            </article>
+              <ArrowRight className="w-4 h-4 text-astro-gold/30 group-hover:text-astro-saffron group-hover:translate-x-1 transition-all" />
+            </motion.article>
           ))}
         </section>
 
-        {/* Trust signals & Social Proof */}
-        <section className="px-6 py-16 text-center">
-          <ShieldCheck className="w-12 h-12 text-astro-gold mx-auto mb-6 opacity-60" />
-          <h2 className="text-astro-gold font-serif text-2xl mb-2">Verified Vedic Lineage</h2>
-          <p className="text-gray-500 text-[10px] uppercase tracking-[0.3em] mb-8">Guided by Top Astrologers & Certified Acharyas</p>
-          
-          <div className="flex justify-center -space-x-3 mb-8">
-            {[1, 2, 3, 4, 5].map((i) => (
-              <img
-                key={i}
-                src={`https://api.dicebear.com/7.x/avataaars/svg?seed=astro-guru-${i}`}
-                className="w-10 h-10 rounded-full border-2 border-astro-indigo bg-black shadow-lg"
-                alt="Verified Top Astrologer Avatar"
-              />
-            ))}
-            <div className="w-10 h-10 rounded-full border-2 border-astro-indigo bg-astro-saffron flex items-center justify-center text-[9px] font-black z-10 shadow-lg">
-              10K+
+        {/* 2. Sacred Rituals Section - HARIDWAR & KASHI */}
+        <section className="px-6 py-12 space-y-8 max-w-4xl mx-auto">
+          <div className="flex items-center justify-between mb-6 px-2">
+            <div className="flex flex-col">
+              <h2 className="font-serif text-2xl sm:text-3xl text-white uppercase tracking-wide">Live Temple Rituals</h2>
+              <span className="text-astro-gold text-[10px] font-black uppercase tracking-[0.2em] mt-1">Starting at Rs 21*</span>
             </div>
+            <button onClick={() => handleAction('pooja')} className="text-astro-gold text-[10px] font-black uppercase tracking-[0.2em] flex items-center gap-2 group">
+              Book Ritual <ArrowRight className="w-3 h-3 group-hover:translate-x-1 transition-transform" />
+            </button>
           </div>
-          <p className="text-gray-400 text-xs italic">Trusted by 10,000+ seekers on the <strong>Astro21</strong> Platform.</p>
+          <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+            <article className="relative h-64 sm:h-72 rounded-[3rem] overflow-hidden glass-card group cursor-pointer border-astro-gold/20 shadow-xl" onClick={() => handleAction('pooja')}>
+              <img 
+                src="https://media.istockphoto.com/id/1241318411/photo/divine-ganga-aarti-yagna-at-rishikesh.jpg?s=612x612&w=0&k=20&c=6kyI1QsjTSVMlcv7jews6kKzPndDet7ItLs6G-gUkaA=" 
+                className="absolute inset-0 w-full h-full object-cover opacity-60 group-hover:scale-105 transition-transform duration-[2000ms]" 
+                alt="Haridwar Pooja" 
+              />
+              <div className="absolute inset-0 bg-gradient-to-t from-black via-black/30 to-transparent" />
+              <div className="absolute bottom-8 left-8 right-8">
+                <div className="flex items-center gap-2 text-astro-saffron mb-2">
+                  <MapPin className="w-4 h-4" />
+                  <span className="text-[10px] font-black uppercase tracking-[0.3em]">Haridwar Sanctuary</span>
+                </div>
+                <h3 className="text-2xl font-serif text-white tracking-wide">Live Ganga Aarti</h3>
+                <p className="text-gray-300 text-[10px] uppercase font-bold tracking-widest mt-1 opacity-60">Personalized Sankalp</p>
+              </div>
+            </article>
+
+            <article className="relative h-64 sm:h-72 rounded-[3rem] overflow-hidden glass-card group cursor-pointer border-astro-gold/20 shadow-xl" onClick={() => handleAction('pooja')}>
+              <img 
+                src="https://www.varanasitourspackage.com/blogs/wp-content/uploads/2018/12/kashi-vishwanath.jpg" 
+                className="absolute inset-0 w-full h-full object-cover opacity-60 group-hover:scale-105 transition-transform duration-[2000ms]" 
+                alt="Kashi Pooja" 
+              />
+              <div className="absolute inset-0 bg-gradient-to-t from-black via-black/30 to-transparent" />
+              <div className="absolute bottom-8 left-8 right-8">
+                <div className="flex items-center gap-2 text-astro-saffron mb-2">
+                  <MapPin className="w-4 h-4" />
+                  <span className="text-[10px] font-black uppercase tracking-[0.3em]">Kashi Vishwanath</span>
+                </div>
+                <h3 className="text-2xl font-serif text-white tracking-wide">Online Rudrabhishek</h3>
+                <p className="text-gray-300 text-[10px] uppercase font-bold tracking-widest mt-1 opacity-60">Direct From Banaras</p>
+              </div>
+            </article>
+          </div>
         </section>
 
-        {/* Footer with SEO Navigation */}
-        <footer className="px-6 py-16 border-t border-astro-gold/10 text-center relative">
-          <div className="absolute top-0 left-1/2 -translate-x-1/2 w-px h-12 bg-gradient-to-b from-astro-gold to-transparent opacity-30" />
-          <div className="flex items-center justify-center gap-3 mb-8">
-            <div className="w-8 h-8 text-astro-saffron/40">
-              <ChakraIcon />
+        {/* 3. Vedic Shop Section */}
+        <section className="px-6 py-16 max-w-4xl mx-auto">
+          <div className="flex items-center justify-between mb-10">
+            <div className="flex flex-col">
+              <h2 className="font-serif text-2xl text-white uppercase tracking-wider">Vedic Store</h2>
+              <span className="text-astro-gold text-[10px] font-black uppercase tracking-[0.2em] mt-1">Starting at Rs 21*</span>
             </div>
-            <span className="font-serif text-2xl font-bold tracking-[0.3em] text-astro-gold/40 uppercase">Astro21</span>
+            <button onClick={() => handleAction('shop')} className="text-astro-gold text-[10px] font-black uppercase tracking-[0.2em] flex items-center gap-2 group">
+              Browse Store <ShoppingBag className="w-3 h-3 group-hover:translate-x-1 transition-transform" />
+            </button>
           </div>
-          <p className="text-astro-gold/40 text-[11px] leading-relaxed italic max-w-xs mx-auto mb-10 font-serif" aria-label="Sacred Mantra">
+          <div className="grid grid-cols-2 md:grid-cols-4 gap-4">
+            {[
+              { id: 'gem', title: 'Certified Gemstones', icon: <Gem className="w-5 h-5" />, price: 'Starting at Rs 21*' },
+              { id: 'rudraksha', title: 'Natural Rudraksha', icon: <Anchor className="w-5 h-5" />, price: 'Starting at Rs 21*' },
+              { id: 'yantra', title: 'Energized Yantras', icon: <ChakraIcon className="w-5 h-5" />, price: 'Starting at Rs 21*' },
+              { id: 'essentials', title: 'Spiritual Essentials', icon: <ShoppingBasket className="w-5 h-5" />, price: 'Starting at Rs 21*' },
+            ].map((item) => (
+              <motion.div 
+                key={item.id}
+                whileHover={{ y: -5 }}
+                onClick={() => handleAction('shop')}
+                className="glass-card p-5 rounded-[2rem] flex flex-col items-center text-center cursor-pointer border-astro-gold/10 hover:border-astro-saffron/30 transition-all shadow-lg"
+              >
+                <div className="w-12 h-12 bg-astro-saffron/10 rounded-2xl flex items-center justify-center text-astro-saffron mb-4 shadow-inner">
+                  {item.icon}
+                </div>
+                <h4 className="text-[11px] font-bold text-white uppercase tracking-tight mb-2 leading-tight">{item.title}</h4>
+                <span className="text-[10px] font-black text-astro-gold opacity-80 uppercase tracking-tighter">{item.price}</span>
+              </motion.div>
+            ))}
+          </div>
+        </section>
+
+        {/* 4. Social Proof */}
+        <section className="px-6 py-20 text-center">
+          <div className="inline-block glass-card px-8 py-6 rounded-[2.5rem] border border-astro-gold/20 shadow-2xl">
+            <h2 className="text-astro-gold font-serif text-xl mb-4 tracking-[0.2em] uppercase">Trusted by 10,000+ Seekers</h2>
+            <div className="flex justify-center -space-x-4 mb-8">
+              {[1, 2, 3, 4, 5, 6].map((i) => (
+                <img
+                  key={i}
+                  src={`https://api.dicebear.com/7.x/avataaars/svg?seed=seeker-${i}`}
+                  className="w-14 h-14 rounded-full border-2 border-astro-indigo bg-black shadow-lg"
+                  alt="Verified Seeker"
+                />
+              ))}
+              <div className="w-14 h-14 rounded-full border-2 border-astro-indigo bg-astro-saffron flex items-center justify-center text-[11px] font-black z-10 shadow-lg">
+                +10k
+              </div>
+            </div>
+            <div className="flex items-center justify-center gap-2 opacity-60">
+              <ShieldCheck className="w-4 h-4 text-green-500" />
+              <span className="text-[10px] font-bold text-white uppercase tracking-widest">Authenticated Pathseekers</span>
+            </div>
+          </div>
+        </section>
+
+        {/* 5. Footer */}
+        <footer className="px-6 py-20 text-center border-t border-astro-gold/10 bg-black/20">
+          <div className="flex items-center justify-center gap-3 mb-8 opacity-40">
+            <ChakraIcon className="w-7 h-7 text-astro-saffron" />
+            <span className="font-serif text-2xl font-bold tracking-[0.4em] text-astro-gold uppercase">Astro21</span>
+          </div>
+          
+          <nav className="flex flex-wrap justify-center gap-8 mb-12 text-[10px] font-black text-gray-500 uppercase tracking-[0.2em]">
+            <button onClick={handleExternalRedirect} className="hover:text-astro-gold transition-colors">Sanctuary Rules</button>
+            <button onClick={handleExternalRedirect} className="hover:text-astro-gold transition-colors">Vedic Wisdom</button>
+            <button onClick={handleExternalRedirect} className="hover:text-astro-gold transition-colors">Temple Support</button>
+            <button onClick={handleExternalRedirect} className="hover:text-astro-gold transition-colors">Secured Privacy</button>
+          </nav>
+          
+          <p className="text-astro-gold/40 text-[12px] leading-relaxed italic max-w-xs mx-auto mb-10 font-serif">
             ॐ असतो मा सद्गमय । तमसो मा ज्योतिर्गमय । <br />
             मृत्योर्मा अमृतं गमय ॥
           </p>
-          <nav className="flex flex-wrap justify-center gap-6 mb-8 text-[10px] font-bold text-gray-500 uppercase tracking-widest">
-            <a href="#" className="hover:text-astro-gold transition-colors">Astrologer Directory</a>
-            <a href="#" className="hover:text-astro-gold transition-colors">Pooja Services</a>
-            <a href="#" className="hover:text-astro-gold transition-colors">Privacy Policy</a>
-            <a href="#" className="hover:text-astro-gold transition-colors">Terms of Use</a>
-          </nav>
-          <p className="text-gray-600 text-[9px] uppercase tracking-[0.2em] font-medium leading-loose">
-            © 2025 Astro21 Technologies. <br />
-            <span className="text-astro-saffron/50">India's Leading Unified Vedic Platform for the Global Seeker.</span>
+          
+          <p className="text-gray-600 text-[9px] uppercase tracking-[0.3em] font-bold leading-loose">
+            © 2025 Astro21 Sanctuary. <br />
+            <span className="text-astro-saffron/50">Vedic Wisdom starting at Rs 21*. Channeled for the Global Seeker.</span>
           </p>
         </footer>
       </main>
 
-      {/* Unified Multi-Modal Bottom Sheet */}
+      {/* Unified Modals */}
       <AnimatePresence>
         {showModal && (
           <div className="fixed inset-0 z-[100] flex items-end sm:items-center justify-center p-4">
-            <motion.div
-              initial={{ opacity: 0 }}
-              animate={{ opacity: 1 }}
-              exit={{ opacity: 0 }}
-              onClick={() => setShowModal(false)}
-              className="absolute inset-0 bg-black/95 backdrop-blur-md"
-            />
-            <motion.div
-              initial={{ y: "100%" }}
-              animate={{ y: 0 }}
-              exit={{ y: "100%" }}
-              transition={{ type: "spring", damping: 30, stiffness: 300 }}
-              className="relative w-full max-w-md glass-card rounded-t-[3rem] sm:rounded-[3rem] p-8 shadow-2xl border-t border-astro-saffron/40"
+            <motion.div initial={{ opacity: 0 }} animate={{ opacity: 1 }} exit={{ opacity: 0 }} onClick={() => setShowModal(false)} className="absolute inset-0 bg-black/95 backdrop-blur-md" />
+            <motion.div 
+              initial={{ y: "100%" }} 
+              animate={{ y: 0 }} 
+              exit={{ y: "100%" }} 
+              transition={{ type: "spring", damping: 30, stiffness: 300 }} 
+              className="relative w-full max-w-md glass-card rounded-t-[3rem] sm:rounded-[3rem] p-8 shadow-2xl border-t border-astro-saffron/40 overflow-hidden"
             >
-              <button 
-                aria-label="Close Information Modal"
-                onClick={() => setShowModal(false)}
-                className="absolute top-8 right-8 p-2 rounded-full bg-white/5 text-gray-500 hover:text-white transition-colors"
-              >
+              <div className="absolute -top-24 -left-24 w-48 h-48 bg-astro-saffron/10 rounded-full blur-3xl pointer-events-none" />
+              <button onClick={() => setShowModal(false)} className="absolute top-8 right-8 p-2 rounded-full bg-white/5 text-gray-500 hover:text-white transition-colors">
                 <X className="w-5 h-5" />
               </button>
               
               <div className="flex flex-col items-center text-center">
                 <div className="w-16 h-16 bg-astro-saffron/10 rounded-3xl flex items-center justify-center text-astro-saffron mb-6 border border-astro-saffron/20 shadow-inner">
-                  {modalType === 'prediction' && <Sparkles className="w-8 h-8" />}
-                  {modalType === 'shop' && <ShoppingBag className="w-8 h-8" />}
+                  {modalType === 'insight' && <Sparkles className="w-8 h-8" />}
+                  {modalType === 'shop' && <ShoppingBasket className="w-8 h-8" />}
                   {modalType === 'pooja' && <Flame className="w-8 h-8" />}
                   {modalType === 'language' && <Languages className="w-8 h-8" />}
                 </div>
                 
-                <h2 className="font-serif text-2xl text-white mb-2">
-                  {modalType === 'prediction' && 'Divine Clarity Awaits'}
-                  {modalType === 'shop' && 'Vedic Marketplace Store'}
-                  {modalType === 'pooja' && 'Live Ritual Portal'}
-                  {modalType === 'language' && 'Regional Native Support'}
+                <h2 className="font-serif text-2xl text-white mb-2 uppercase tracking-[0.1em]">
+                  {modalType === 'insight' ? 'Cosmic Insight' : modalType === 'shop' ? 'Vedic Store' : modalType === 'pooja' ? 'Sacred Ritual' : 'Language'}
                 </h2>
+                <span className="text-astro-gold text-[10px] font-black uppercase tracking-[0.2em] mb-6">Starting at Rs 21*</span>
                 
-                <p className="text-gray-400 text-sm mb-8 px-4 leading-relaxed">
-                  {modalType === 'prediction' && 'Enter the Astro21 portal to unlock detailed AI Kundli reports and get instant guidance from the best astrologers.'}
-                  {modalType === 'shop' && 'Access our marketplace for lab-certified gems, original Rudraksha and energized Vedic tools.'}
-                  {modalType === 'pooja' && 'Book live Poojas in Kashi & Haridwar with personalized name Sankalp performed by verified Acharyas.'}
-                  {modalType === 'language' && 'Experience the world of Vedic wisdom in your own mother tongue with support for 10+ languages.'}
-                </p>
+                {modalType === 'insight' && (
+                  <div className="w-full mb-8">
+                    {isAligning ? (
+                      <div className="py-8 flex flex-col items-center gap-4">
+                        <motion.div animate={{ rotate: 360 }} transition={{ duration: 2, repeat: Infinity, ease: "linear" }} className="w-10 h-10 text-astro-saffron">
+                          <ChakraIcon />
+                        </motion.div>
+                        <p className="text-astro-gold font-serif italic text-sm animate-pulse tracking-wide">Consulting the Akashic Records...</p>
+                      </div>
+                    ) : sacredInsight ? (
+                      <motion.div initial={{ opacity: 0 }} animate={{ opacity: 1 }} className="bg-white/5 border border-astro-gold/20 rounded-3xl p-6 italic text-gray-300 text-sm leading-relaxed font-serif shadow-inner">
+                        "{sacredInsight}"
+                      </motion.div>
+                    ) : (
+                      <p className="text-gray-400 text-sm font-light">Enter your birth date in the sanctuary to align your destiny starting at Rs 21*.</p>
+                    )}
+                  </div>
+                )}
 
-                {modalType === 'language' ? (
-                  <div className="grid grid-cols-2 gap-3 w-full mb-10">
+                {modalType === 'language' && (
+                  <div className="grid grid-cols-2 gap-3 w-full mb-10 mt-4">
                     {languages.map((lang) => (
-                      <button
-                        key={lang}
-                        onClick={() => {
-                          setSelectedLang(lang);
-                          setShowModal(false);
-                        }}
-                        className={`py-3 rounded-2xl text-[11px] font-bold uppercase transition-all tracking-wider ${
-                          selectedLang === lang 
-                            ? 'bg-gradient-to-r from-astro-saffron to-orange-600 text-white saffron-glow shadow-lg' 
-                            : 'bg-white/5 text-gray-400 hover:bg-white/10 border border-white/5'
-                        }`}
+                      <button 
+                        key={lang} 
+                        onClick={() => { setSelectedLang(lang); setShowModal(false); }} 
+                        className={`py-3 rounded-2xl text-[10px] font-black uppercase transition-all tracking-wider ${selectedLang === lang ? 'bg-astro-saffron text-white shadow-lg saffron-glow' : 'bg-white/5 text-gray-400 border border-white/5'}`}
                       >
                         {lang}
                       </button>
                     ))}
                   </div>
-                ) : (
-                  <div className="bg-gradient-to-br from-astro-indigo to-black rounded-[2.5rem] p-6 mb-10 border border-astro-gold/20 w-full shadow-inner relative overflow-hidden group">
-                    <div className="absolute -top-12 -right-12 w-24 h-24 bg-astro-saffron/10 rounded-full blur-3xl" />
-                    <p className="text-astro-saffron font-black text-[10px] uppercase tracking-widest mb-2">Astro21 Exclusive</p>
-                    <p className="text-white text-lg font-medium leading-tight">
-                      {modalType === 'prediction' && 'Full Destiny Chart Access'}
-                      {modalType === 'shop' && 'Digital Lab Authenticity Proof'}
-                      {modalType === 'pooja' && 'Secure Live Temple Stream'}
-                    </p>
-                    <div className="flex items-center justify-center gap-2 mt-3">
-                      <span className="text-astro-gold text-2xl font-black">
-                        Starting from ₹21*
-                      </span>
-                    </div>
-                  </div>
+                )}
+
+                {(modalType === 'shop' || modalType === 'pooja') && (
+                  <p className="text-gray-400 text-sm font-light mb-8">
+                    Enter the full sanctuary portal to finalize your booking and access exclusive member pricing starting at Rs 21*.
+                  </p>
                 )}
                 
                 <button 
-                  className="w-full bg-gradient-to-r from-astro-saffron to-orange-600 text-white py-5 rounded-2xl font-black saffron-glow text-lg uppercase tracking-tight active:scale-95 transition-all shadow-xl flex items-center justify-center gap-3"
+                  className="w-full bg-gradient-to-r from-astro-saffron to-orange-600 text-white py-5 rounded-2xl font-black saffron-glow text-lg uppercase tracking-tight active:scale-95 transition-all shadow-xl flex items-center justify-center gap-3" 
                   onClick={handleExternalRedirect}
                 >
-                  Enter Portal Now <Layout className="w-5 h-5" />
+                  Enter Full Sanctuary <Layout className="w-5 h-5" />
                 </button>
-                <p className="text-gray-600 text-[10px] font-bold uppercase tracking-widest mt-5">Verified • Secured • Authentic Vedic Wisdom</p>
+                <p className="text-gray-600 text-[10px] font-bold uppercase tracking-widest mt-6">Verified • Secured • Authentic Vedic Path</p>
               </div>
             </motion.div>
           </div>
+        )}
+
+        {showChat && (
+          <EncryptedChat onClose={() => setShowChat(false)} />
         )}
       </AnimatePresence>
     </div>
