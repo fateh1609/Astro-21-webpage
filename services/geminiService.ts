@@ -1,28 +1,18 @@
-
-import { GoogleGenAI } from "@google/genai";
-
 /**
- * Astro21 Sacred Geometry & Cosmic Alignment Engine
- * Connects to the Akashic records via Spiritual Intelligence.
+ * Astro21 Sacred Geometry & Static Vedic Wisdom Engine
+ * Provides simulated cosmic alignment for the landing page funnel.
  */
 export async function getSacredInsight(birthDate: string): Promise<string> {
-  // Use environment variable for secure connection
-  const ai = new GoogleGenAI({ apiKey: process.env.API_KEY || "" });
+  // Simulate sacred calculation delay
+  await new Promise(resolve => setTimeout(resolve, 1500));
   
-  try {
-    const response = await ai.models.generateContent({
-      model: "gemini-3-flash-preview",
-      contents: `Perform a sacred Vedic birth chart alignment for ${birthDate}. 
-      Provide a brief, high-energy cosmic blessing and a specific life path focus. 
-      Avoid all technical or artificial terminology. Max 50 words.`,
-      config: {
-        systemInstruction: "You are the Astro21 Cosmic Oracle, channeling ancient wisdom through sacred geometry and spiritual alignment.",
-      },
-    });
+  const blessings = [
+    "The stars indicate a period of profound spiritual awakening. Your alignment with the cosmic order is strengthening.",
+    "A journey of a thousand miles begins with a single step towards your dharma. Your path is cleared of obstacles.",
+    "As the sun rises in your chart, expect clarity in matters of purpose and prosperity. The universe supports your intent.",
+    "The divine rhythm of your birth reflects a soul destined for great compassion and leadership.",
+    "Celestial harmonics suggest your current path is leading to a significant karmic breakthrough."
+  ];
 
-    return response.text || "The cosmic channels are currently aligning. Please try again soon.";
-  } catch (error) {
-    console.error("Cosmic Alignment Error:", error);
-    return "Your destiny is unfolding. Please enter our main sanctuary for a deeper reading.";
-  }
+  return blessings[Math.floor(Math.random() * blessings.length)];
 }

@@ -10,12 +10,10 @@ import {
   ShoppingBag,
   MapPin,
   Flame,
-  Award,
   Languages,
   Globe,
   Layout,
   MessageSquareLock,
-  Lock,
   Eye,
   Zap,
   ShoppingBasket,
@@ -122,7 +120,6 @@ const App: React.FC = () => {
             </p>
           </motion.div>
 
-          {/* Central Animated Element */}
           <div className="relative w-64 h-64 flex items-center justify-center mb-8 scale-90 sm:scale-100" aria-hidden="true">
             <motion.div
               animate={{ rotate: 360 }}
@@ -148,7 +145,6 @@ const App: React.FC = () => {
             </motion.div>
           </div>
 
-          {/* Chat-like Input Field */}
           <motion.div
             initial={{ opacity: 0, scale: 0.95 }}
             animate={!isLoading ? { opacity: 1, scale: 1 } : {}}
@@ -186,14 +182,14 @@ const App: React.FC = () => {
           <div className="text-center mb-10">
             <h2 className="font-serif text-2xl text-astro-gold uppercase tracking-widest">Sacred Offerings</h2>
             <div className="w-12 h-0.5 bg-astro-saffron mx-auto mt-2 opacity-50 rounded-full" />
-            <p className="text-[10px] text-astro-gold/60 uppercase tracking-[0.2em] mt-3 font-bold">Insights starting at Rs 21*</p>
+            <p className="text-[10px] text-astro-gold/60 uppercase tracking-[0.2em] mt-3 font-bold italic">Sacred Wisdom starting at Rs 21*</p>
           </div>
 
           {[
             { id: 'kundli', title: 'Sacred Kundli', desc: 'Deep alignment of your Janma Patrika using high-precision sacred geometry.', icon: <Eye className="w-6 h-6" /> },
             { id: 'dosha', title: 'Dosha Analysis', desc: 'Identify and balance spiritual blockages through traditional Vedic methods.', icon: <Zap className="w-6 h-6" /> },
             { id: 'future', title: 'Future Alignment', desc: 'Glimpse your soul\'s trajectory through the lens of timeless cosmic laws.', icon: <Sparkles className="w-6 h-6" /> },
-            { id: 'chat-feature', title: 'Secured Sanctuary Chat', desc: 'Sacred end-to-end encrypted consultations with verified Sanctuary Acharyas.', icon: <MessageSquareLock className="w-6 h-6" /> },
+            { id: 'chat-feature', title: 'Secured Sanctuary Chat', desc: 'End-to-end encrypted consultations with verified Sanctuary Acharyas.', icon: <MessageSquareLock className="w-6 h-6" /> },
           ].map((feature) => (
             <motion.article
               whileInView={{ opacity: 1, y: 0 }}
@@ -214,16 +210,12 @@ const App: React.FC = () => {
           ))}
         </section>
 
-        {/* POOJAS SECTION - HARIDWAR & KASHI */}
+        {/* POOJAS SECTION */}
         <section className="px-6 py-12 space-y-8 max-w-4xl mx-auto">
-          <div className="flex items-center justify-between mb-6 px-2">
-            <div className="flex flex-col">
-              <h2 className="font-serif text-2xl sm:text-3xl text-white uppercase tracking-wide">Live Temple Rituals</h2>
-              <span className="text-astro-gold text-[10px] font-black uppercase tracking-[0.2em] mt-1">Starting at Rs 21*</span>
-            </div>
-            <button onClick={() => handleAction('pooja')} className="text-astro-gold text-[10px] font-black uppercase tracking-[0.2em] flex items-center gap-2 group">
-              Book Ritual <ArrowRight className="w-3 h-3 group-hover:translate-x-1 transition-transform" />
-            </button>
+          <div className="flex flex-col items-center mb-6 text-center">
+            <h2 className="font-serif text-3xl text-white uppercase tracking-wide">Live Temple Rituals</h2>
+            <div className="w-12 h-0.5 bg-astro-saffron my-2 opacity-50 rounded-full" />
+            <span className="text-astro-gold text-[10px] font-black uppercase tracking-[0.2em]">Starting at Rs 21*</span>
           </div>
           <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
             <article className="relative h-64 sm:h-72 rounded-[3rem] overflow-hidden glass-card group cursor-pointer border-astro-gold/20 shadow-xl" onClick={() => handleAction('pooja')}>
@@ -239,7 +231,7 @@ const App: React.FC = () => {
                   <span className="text-[10px] font-black uppercase tracking-[0.3em]">Haridwar Sanctuary</span>
                 </div>
                 <h3 className="text-2xl font-serif text-white tracking-wide">Live Ganga Aarti</h3>
-                <p className="text-gray-300 text-[10px] uppercase font-bold tracking-widest mt-1 opacity-60">Personalized Sankalp</p>
+                <p className="text-gray-300 text-[10px] uppercase font-bold tracking-widest mt-1 opacity-60">Personalized Sankalp • Rs 21*</p>
               </div>
             </article>
 
@@ -256,7 +248,7 @@ const App: React.FC = () => {
                   <span className="text-[10px] font-black uppercase tracking-[0.3em]">Kashi Vishwanath</span>
                 </div>
                 <h3 className="text-2xl font-serif text-white tracking-wide">Online Rudrabhishek</h3>
-                <p className="text-gray-300 text-[10px] uppercase font-bold tracking-widest mt-1 opacity-60">Direct From Banaras</p>
+                <p className="text-gray-300 text-[10px] uppercase font-bold tracking-widest mt-1 opacity-60">Direct From Banaras • Rs 21*</p>
               </div>
             </article>
           </div>
@@ -264,14 +256,10 @@ const App: React.FC = () => {
 
         {/* 4 SHOP ITEMS SECTION */}
         <section className="px-6 py-16 max-w-4xl mx-auto">
-          <div className="flex items-center justify-between mb-10">
-            <div className="flex flex-col">
-              <h2 className="font-serif text-2xl text-white uppercase tracking-wider">Vedic Store</h2>
-              <span className="text-astro-gold text-[10px] font-black uppercase tracking-[0.2em] mt-1">Starting at Rs 21*</span>
-            </div>
-            <button onClick={() => handleAction('shop')} className="text-astro-gold text-[10px] font-black uppercase tracking-[0.2em] flex items-center gap-2 group">
-              Browse Store <ShoppingBag className="w-3 h-3 group-hover:translate-x-1 transition-transform" />
-            </button>
+          <div className="flex flex-col items-center mb-10 text-center">
+            <h2 className="font-serif text-2xl text-white uppercase tracking-wider">Vedic Store</h2>
+            <div className="w-12 h-0.5 bg-astro-saffron my-2 opacity-50 rounded-full" />
+            <span className="text-astro-gold text-[10px] font-black uppercase tracking-[0.2em]">Essentials starting at Rs 21*</span>
           </div>
           <div className="grid grid-cols-2 md:grid-cols-4 gap-4">
             {[
@@ -390,7 +378,7 @@ const App: React.FC = () => {
                         "{sacredInsight}"
                       </motion.div>
                     ) : (
-                      <p className="text-gray-400 text-sm font-light leading-relaxed">Enter your birth date in the sanctuary to align your destiny starting at Rs 21*.</p>
+                      <p className="text-gray-400 text-sm font-light leading-relaxed">Align your destiny starting at Rs 21*.</p>
                     )}
                   </div>
                 )}
