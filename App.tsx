@@ -19,11 +19,11 @@ import {
   ShoppingBasket,
   Anchor
 } from 'lucide-react';
-import StarField from './components/StarField.tsx';
-import LoadingScreen from './components/LoadingScreen.tsx';
-import { LotusIcon, ChakraIcon } from './components/Icons.tsx';
-import { getSacredInsight } from './services/geminiService.ts';
-import EncryptedChat from './components/EncryptedChat.tsx';
+import StarField from './components/StarField';
+import LoadingScreen from './components/LoadingScreen';
+import { LotusIcon, ChakraIcon } from './components/Icons';
+import { getSacredInsight } from './services/geminiService';
+import EncryptedChat from './components/EncryptedChat';
 
 const DESTINATION_URL = "https://astro21.io";
 
@@ -120,6 +120,7 @@ const App: React.FC = () => {
             </p>
           </motion.div>
 
+          {/* Central Animated Element */}
           <div className="relative w-64 h-64 flex items-center justify-center mb-8 scale-90 sm:scale-100" aria-hidden="true">
             <motion.div
               animate={{ rotate: 360 }}
@@ -145,6 +146,7 @@ const App: React.FC = () => {
             </motion.div>
           </div>
 
+          {/* Chat-like Input Field */}
           <motion.div
             initial={{ opacity: 0, scale: 0.95 }}
             animate={!isLoading ? { opacity: 1, scale: 1 } : {}}
@@ -177,7 +179,7 @@ const App: React.FC = () => {
           </motion.div>
         </section>
 
-        {/* FEATURE LIST SECTION */}
+        {/* 1. FEATURE LIST SECTION */}
         <section className="px-6 py-12 max-w-xl mx-auto space-y-6">
           <div className="text-center mb-10">
             <h2 className="font-serif text-2xl text-astro-gold uppercase tracking-widest">Sacred Offerings</h2>
@@ -210,7 +212,7 @@ const App: React.FC = () => {
           ))}
         </section>
 
-        {/* POOJAS SECTION */}
+        {/* 2. POOJAS SECTION - HARIDWAR & KASHI */}
         <section className="px-6 py-12 space-y-8 max-w-4xl mx-auto">
           <div className="flex flex-col items-center mb-6 text-center">
             <h2 className="font-serif text-3xl text-white uppercase tracking-wide">Live Temple Rituals</h2>
@@ -231,7 +233,7 @@ const App: React.FC = () => {
                   <span className="text-[10px] font-black uppercase tracking-[0.3em]">Haridwar Sanctuary</span>
                 </div>
                 <h3 className="text-2xl font-serif text-white tracking-wide">Live Ganga Aarti</h3>
-                <p className="text-gray-300 text-[10px] uppercase font-bold tracking-widest mt-1 opacity-60">Personalized Sankalp • Rs 21*</p>
+                <p className="text-gray-300 text-[10px] uppercase font-bold tracking-widest mt-1 opacity-60">Personalized Sankalp • Starting at Rs 21*</p>
               </div>
             </article>
 
@@ -248,13 +250,13 @@ const App: React.FC = () => {
                   <span className="text-[10px] font-black uppercase tracking-[0.3em]">Kashi Vishwanath</span>
                 </div>
                 <h3 className="text-2xl font-serif text-white tracking-wide">Online Rudrabhishek</h3>
-                <p className="text-gray-300 text-[10px] uppercase font-bold tracking-widest mt-1 opacity-60">Direct From Banaras • Rs 21*</p>
+                <p className="text-gray-300 text-[10px] uppercase font-bold tracking-widest mt-1 opacity-60">Direct From Banaras • Starting at Rs 21*</p>
               </div>
             </article>
           </div>
         </section>
 
-        {/* 4 SHOP ITEMS SECTION */}
+        {/* 3. VEDIC SHOP SECTION (4 ITEMS) */}
         <section className="px-6 py-16 max-w-4xl mx-auto">
           <div className="flex flex-col items-center mb-10 text-center">
             <h2 className="font-serif text-2xl text-white uppercase tracking-wider">Vedic Store</h2>
@@ -284,7 +286,7 @@ const App: React.FC = () => {
           </div>
         </section>
 
-        {/* TRUST / SOCIAL PROOF SECTION */}
+        {/* 4. TRUST / FOOTER SECTIONS */}
         <section className="px-6 py-20 text-center">
           <div className="inline-block glass-card px-8 py-6 rounded-[2.5rem] border border-astro-gold/20 shadow-2xl">
             <h2 className="text-astro-gold font-serif text-xl mb-4 tracking-[0.2em] uppercase">Trusted by 10,000+ Seekers</h2>
@@ -308,7 +310,6 @@ const App: React.FC = () => {
           </div>
         </section>
 
-        {/* FOOTER */}
         <footer className="px-6 py-20 text-center border-t border-astro-gold/10 bg-black/20">
           <div className="flex items-center justify-center gap-3 mb-8 opacity-40">
             <ChakraIcon className="w-7 h-7 text-astro-saffron" />

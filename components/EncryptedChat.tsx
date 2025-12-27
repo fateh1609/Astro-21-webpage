@@ -1,8 +1,7 @@
-
 import React, { useState } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
 import { ShieldCheck, Lock, Send, User, ChevronLeft } from 'lucide-react';
-import { ChakraIcon } from './Icons.tsx';
+import { ChakraIcon } from './Icons';
 
 interface EncryptedChatProps {
   onClose: () => void;
