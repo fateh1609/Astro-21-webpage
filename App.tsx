@@ -1,3 +1,4 @@
+
 import React, { useState } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
 import { 
@@ -17,11 +18,7 @@ import {
   MessageSquareLock,
   Lock,
   Eye,
-  Zap,
-  ShoppingBasket,
-  BookOpen,
-  Anchor,
-  CircleDot
+  Zap
 } from 'lucide-react';
 import StarField from './components/StarField.tsx';
 import LoadingScreen from './components/LoadingScreen.tsx';
@@ -117,14 +114,14 @@ const App: React.FC = () => {
           >
             <h1 className="font-serif text-4xl md:text-6xl mb-4 leading-[1.1] tracking-tight">
               Decode Your Cosmic Code <br />
-              <span className="text-transparent bg-clip-text bg-gradient-to-b from-astro-saffron to-astro-gold italic font-bold">Starting at Rs 21*</span>
+              <span className="text-transparent bg-clip-text bg-gradient-to-b from-astro-saffron to-astro-gold italic">With Spiritual Intelligence</span>
             </h1>
             <p className="text-gray-400 text-base max-w-[340px] mx-auto font-light leading-relaxed">
               Experience the future of Vedic wisdom. Discover your divine path through <strong>Sacred Geometry</strong>.
             </p>
           </motion.div>
 
-          {/* Central Animated Element */}
+          {/* Central Animated Element (Pulse) */}
           <div className="relative w-64 h-64 flex items-center justify-center mb-8 scale-90 sm:scale-100" aria-hidden="true">
             <motion.div
               animate={{ rotate: 360 }}
@@ -150,7 +147,7 @@ const App: React.FC = () => {
             </motion.div>
           </div>
 
-          {/* Chat-like Input Field */}
+          {/* Prominent Chat-like Input Field */}
           <motion.div
             initial={{ opacity: 0, scale: 0.95 }}
             animate={!isLoading ? { opacity: 1, scale: 1 } : {}}
@@ -183,19 +180,42 @@ const App: React.FC = () => {
           </motion.div>
         </section>
 
-        {/* 1. Feature Cards Section */}
+        {/* Feature Cards Section (Vertical Scroll) */}
         <section className="px-6 py-12 max-w-xl mx-auto space-y-6">
           <div className="text-center mb-10">
             <h2 className="font-serif text-2xl text-astro-gold uppercase tracking-widest">Sacred Offerings</h2>
             <div className="w-12 h-0.5 bg-astro-saffron mx-auto mt-2 opacity-50 rounded-full" />
-            <p className="text-[10px] text-astro-gold/60 uppercase tracking-[0.2em] mt-3 font-bold">Insights starting at Rs 21*</p>
           </div>
 
           {[
-            { id: 'kundli', title: 'Sacred Kundli', desc: 'Deep alignment of your Janma Patrika using high-precision sacred geometry.', icon: <Eye className="w-6 h-6" /> },
-            { id: 'dosha', title: 'Dosha Analysis', desc: 'Identify and balance spiritual blockages through traditional Vedic methods.', icon: <Zap className="w-6 h-6" /> },
-            { id: 'future', title: 'Future Alignment', desc: 'Glimpse your soul\'s trajectory through the lens of timeless cosmic laws.', icon: <Sparkles className="w-6 h-6" /> },
-            { id: 'chat-feature', title: 'Secured Sanctuary Chat', desc: 'Sacred end-to-end encrypted consultations with verified Sanctuary Acharyas.', icon: <MessageSquareLock className="w-6 h-6" /> },
+            { 
+              id: 'kundli', 
+              title: 'Sacred Kundli', 
+              desc: 'Deep alignment of your Janma Patrika using high-precision sacred geometry.', 
+              icon: <Eye className="w-6 h-6" />,
+              accent: 'saffron'
+            },
+            { 
+              id: 'dosha', 
+              title: 'Dosha Analysis', 
+              desc: 'Identify and balance spiritual blockages through traditional Vedic methods.', 
+              icon: <Zap className="w-6 h-6" />,
+              accent: 'gold'
+            },
+            { 
+              id: 'future', 
+              title: 'Future Alignment', 
+              desc: 'Glimpse your soul\'s trajectory through the lens of timeless cosmic laws.', 
+              icon: <Sparkles className="w-6 h-6" />,
+              accent: 'saffron'
+            },
+            { 
+              id: 'chat-feature', 
+              title: 'Secured Sanctuary Chat', 
+              desc: 'Sacred end-to-end encrypted consultations with verified Sanctuary Acharyas.', 
+              icon: <MessageSquareLock className="w-6 h-6" />,
+              accent: 'gold'
+            },
           ].map((feature) => (
             <motion.article
               whileInView={{ opacity: 1, y: 0 }}
@@ -216,139 +236,74 @@ const App: React.FC = () => {
           ))}
         </section>
 
-        {/* 2. Sacred Rituals Section - HARIDWAR & KASHI */}
-        <section className="px-6 py-12 space-y-8 max-w-4xl mx-auto">
-          <div className="flex items-center justify-between mb-6 px-2">
-            <div className="flex flex-col">
-              <h2 className="font-serif text-2xl sm:text-3xl text-white uppercase tracking-wide">Live Temple Rituals</h2>
-              <span className="text-astro-gold text-[10px] font-black uppercase tracking-[0.2em] mt-1">Starting at Rs 21*</span>
-            </div>
-            <button onClick={() => handleAction('pooja')} className="text-astro-gold text-[10px] font-black uppercase tracking-[0.2em] flex items-center gap-2 group">
-              Book Ritual <ArrowRight className="w-3 h-3 group-hover:translate-x-1 transition-transform" />
-            </button>
-          </div>
-          <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-            <article className="relative h-64 sm:h-72 rounded-[3rem] overflow-hidden glass-card group cursor-pointer border-astro-gold/20 shadow-xl" onClick={() => handleAction('pooja')}>
-              <img 
-                src="https://media.istockphoto.com/id/1241318411/photo/divine-ganga-aarti-yagna-at-rishikesh.jpg?s=612x612&w=0&k=20&c=6kyI1QsjTSVMlcv7jews6kKzPndDet7ItLs6G-gUkaA=" 
-                className="absolute inset-0 w-full h-full object-cover opacity-60 group-hover:scale-105 transition-transform duration-[2000ms]" 
-                alt="Haridwar Pooja" 
-              />
-              <div className="absolute inset-0 bg-gradient-to-t from-black via-black/30 to-transparent" />
-              <div className="absolute bottom-8 left-8 right-8">
-                <div className="flex items-center gap-2 text-astro-saffron mb-2">
-                  <MapPin className="w-4 h-4" />
-                  <span className="text-[10px] font-black uppercase tracking-[0.3em]">Haridwar Sanctuary</span>
-                </div>
-                <h3 className="text-2xl font-serif text-white tracking-wide">Live Ganga Aarti</h3>
-                <p className="text-gray-300 text-[10px] uppercase font-bold tracking-widest mt-1 opacity-60">Personalized Sankalp</p>
-              </div>
-            </article>
-
-            <article className="relative h-64 sm:h-72 rounded-[3rem] overflow-hidden glass-card group cursor-pointer border-astro-gold/20 shadow-xl" onClick={() => handleAction('pooja')}>
-              <img 
-                src="https://www.varanasitourspackage.com/blogs/wp-content/uploads/2018/12/kashi-vishwanath.jpg" 
-                className="absolute inset-0 w-full h-full object-cover opacity-60 group-hover:scale-105 transition-transform duration-[2000ms]" 
-                alt="Kashi Pooja" 
-              />
-              <div className="absolute inset-0 bg-gradient-to-t from-black via-black/30 to-transparent" />
-              <div className="absolute bottom-8 left-8 right-8">
-                <div className="flex items-center gap-2 text-astro-saffron mb-2">
-                  <MapPin className="w-4 h-4" />
-                  <span className="text-[10px] font-black uppercase tracking-[0.3em]">Kashi Vishwanath</span>
-                </div>
-                <h3 className="text-2xl font-serif text-white tracking-wide">Online Rudrabhishek</h3>
-                <p className="text-gray-300 text-[10px] uppercase font-bold tracking-widest mt-1 opacity-60">Direct From Banaras</p>
-              </div>
-            </article>
-          </div>
-        </section>
-
-        {/* 3. Vedic Shop Section */}
-        <section className="px-6 py-16 max-w-4xl mx-auto">
-          <div className="flex items-center justify-between mb-10">
-            <div className="flex flex-col">
-              <h2 className="font-serif text-2xl text-white uppercase tracking-wider">Vedic Store</h2>
-              <span className="text-astro-gold text-[10px] font-black uppercase tracking-[0.2em] mt-1">Starting at Rs 21*</span>
-            </div>
-            <button onClick={() => handleAction('shop')} className="text-astro-gold text-[10px] font-black uppercase tracking-[0.2em] flex items-center gap-2 group">
-              Browse Store <ShoppingBag className="w-3 h-3 group-hover:translate-x-1 transition-transform" />
-            </button>
-          </div>
-          <div className="grid grid-cols-2 md:grid-cols-4 gap-4">
-            {[
-              { id: 'gem', title: 'Certified Gemstones', icon: <Gem className="w-5 h-5" />, price: 'Starting at Rs 21*' },
-              { id: 'rudraksha', title: 'Natural Rudraksha', icon: <Anchor className="w-5 h-5" />, price: 'Starting at Rs 21*' },
-              { id: 'yantra', title: 'Energized Yantras', icon: <ChakraIcon className="w-5 h-5" />, price: 'Starting at Rs 21*' },
-              { id: 'essentials', title: 'Spiritual Essentials', icon: <ShoppingBasket className="w-5 h-5" />, price: 'Starting at Rs 21*' },
-            ].map((item) => (
-              <motion.div 
-                key={item.id}
-                whileHover={{ y: -5 }}
-                onClick={() => handleAction('shop')}
-                className="glass-card p-5 rounded-[2rem] flex flex-col items-center text-center cursor-pointer border-astro-gold/10 hover:border-astro-saffron/30 transition-all shadow-lg"
-              >
-                <div className="w-12 h-12 bg-astro-saffron/10 rounded-2xl flex items-center justify-center text-astro-saffron mb-4 shadow-inner">
-                  {item.icon}
-                </div>
-                <h4 className="text-[11px] font-bold text-white uppercase tracking-tight mb-2 leading-tight">{item.title}</h4>
-                <span className="text-[10px] font-black text-astro-gold opacity-80 uppercase tracking-tighter">{item.price}</span>
-              </motion.div>
-            ))}
-          </div>
-        </section>
-
-        {/* 4. Social Proof */}
+        {/* Social Proof Section */}
         <section className="px-6 py-20 text-center">
-          <div className="inline-block glass-card px-8 py-6 rounded-[2.5rem] border border-astro-gold/20 shadow-2xl">
-            <h2 className="text-astro-gold font-serif text-xl mb-4 tracking-[0.2em] uppercase">Trusted by 10,000+ Seekers</h2>
-            <div className="flex justify-center -space-x-4 mb-8">
+          <div className="inline-block glass-card px-6 py-4 rounded-3xl border border-astro-gold/20 shadow-2xl">
+            <h2 className="text-astro-gold font-serif text-xl mb-4 tracking-wider">Trusted by 10,000+ Seekers</h2>
+            <div className="flex justify-center -space-x-3 mb-6">
               {[1, 2, 3, 4, 5, 6].map((i) => (
                 <img
                   key={i}
                   src={`https://api.dicebear.com/7.x/avataaars/svg?seed=seeker-${i}`}
-                  className="w-14 h-14 rounded-full border-2 border-astro-indigo bg-black shadow-lg"
+                  className="w-12 h-12 rounded-full border-2 border-astro-indigo bg-black shadow-lg"
                   alt="Verified Seeker"
                 />
               ))}
-              <div className="w-14 h-14 rounded-full border-2 border-astro-indigo bg-astro-saffron flex items-center justify-center text-[11px] font-black z-10 shadow-lg">
+              <div className="w-12 h-12 rounded-full border-2 border-astro-indigo bg-astro-saffron flex items-center justify-center text-[10px] font-black z-10 shadow-lg">
                 +10k
               </div>
             </div>
-            <div className="flex items-center justify-center gap-2 opacity-60">
+            <div className="flex items-center justify-center gap-2">
               <ShieldCheck className="w-4 h-4 text-green-500" />
-              <span className="text-[10px] font-bold text-white uppercase tracking-widest">Authenticated Pathseekers</span>
+              <span className="text-[10px] font-bold text-gray-500 uppercase tracking-widest">Authenticated Pathseekers</span>
             </div>
           </div>
         </section>
 
-        {/* 5. Footer */}
-        <footer className="px-6 py-20 text-center border-t border-astro-gold/10 bg-black/20">
+        {/* Online Pooja Quick Link */}
+        <section className="px-6 py-12 max-w-4xl mx-auto">
+          <div className="relative h-64 rounded-[3rem] overflow-hidden group cursor-pointer border border-astro-gold/20 shadow-2xl" onClick={() => handleAction('pooja')}>
+            <img 
+              src="https://media.istockphoto.com/id/1241318411/photo/divine-ganga-aarti-yagna-at-rishikesh.jpg?s=612x612&w=0&k=20&c=6kyI1QsjTSVMlcv7jews6kKzPndDet7ItLs6G-gUkaA=" 
+              className="absolute inset-0 w-full h-full object-cover opacity-60 group-hover:scale-105 transition-transform duration-[2000ms]" 
+              alt="Sacred Rituals" 
+            />
+            <div className="absolute inset-0 bg-gradient-to-t from-astro-indigo via-astro-indigo/40 to-transparent" />
+            <div className="absolute bottom-8 left-8 right-8">
+              <span className="text-astro-saffron text-[10px] font-black uppercase tracking-[0.3em] mb-2 block">Live Sanctuary</span>
+              <h3 className="text-2xl font-serif text-white tracking-wide">Vedic Ritual Sanctuary</h3>
+              <p className="text-gray-300 text-xs font-light mt-1">Book authentic Live Poojas in Haridwar & Kashi.</p>
+            </div>
+          </div>
+        </section>
+
+        {/* Footer */}
+        <footer className="px-6 py-16 text-center border-t border-astro-gold/10">
           <div className="flex items-center justify-center gap-3 mb-8 opacity-40">
-            <ChakraIcon className="w-7 h-7 text-astro-saffron" />
-            <span className="font-serif text-2xl font-bold tracking-[0.4em] text-astro-gold uppercase">Astro21</span>
+            <ChakraIcon className="w-6 h-6 text-astro-saffron" />
+            <span className="font-serif text-xl font-bold tracking-[0.3em] text-astro-gold uppercase">Astro21</span>
           </div>
           
-          <nav className="flex flex-wrap justify-center gap-8 mb-12 text-[10px] font-black text-gray-500 uppercase tracking-[0.2em]">
+          <nav className="flex flex-wrap justify-center gap-6 mb-10 text-[10px] font-bold text-gray-500 uppercase tracking-widest">
             <button onClick={handleExternalRedirect} className="hover:text-astro-gold transition-colors">Sanctuary Rules</button>
             <button onClick={handleExternalRedirect} className="hover:text-astro-gold transition-colors">Vedic Wisdom</button>
             <button onClick={handleExternalRedirect} className="hover:text-astro-gold transition-colors">Temple Support</button>
             <button onClick={handleExternalRedirect} className="hover:text-astro-gold transition-colors">Secured Privacy</button>
           </nav>
           
-          <p className="text-astro-gold/40 text-[12px] leading-relaxed italic max-w-xs mx-auto mb-10 font-serif">
+          <p className="text-astro-gold/40 text-[11px] leading-relaxed italic max-w-xs mx-auto mb-10 font-serif">
             ॐ असतो मा सद्गमय । तमसो मा ज्योतिर्गमय । <br />
             मृत्योर्मा अमृतं गमय ॥
           </p>
           
-          <p className="text-gray-600 text-[9px] uppercase tracking-[0.3em] font-bold leading-loose">
+          <p className="text-gray-600 text-[9px] uppercase tracking-[0.2em] font-medium leading-loose">
             © 2025 Astro21 Sanctuary. <br />
-            <span className="text-astro-saffron/50">Vedic Wisdom starting at Rs 21*. Channeled for the Global Seeker.</span>
+            <span className="text-astro-saffron/50">The Future of Vedic Wisdom, Channeled for the Global Seeker.</span>
           </p>
         </footer>
       </main>
 
-      {/* Unified Modals */}
+      {/* Modals & Overlays */}
       <AnimatePresence>
         {showModal && (
           <div className="fixed inset-0 z-[100] flex items-end sm:items-center justify-center p-4">
@@ -358,9 +313,8 @@ const App: React.FC = () => {
               animate={{ y: 0 }} 
               exit={{ y: "100%" }} 
               transition={{ type: "spring", damping: 30, stiffness: 300 }} 
-              className="relative w-full max-w-md glass-card rounded-t-[3rem] sm:rounded-[3rem] p-8 shadow-2xl border-t border-astro-saffron/40 overflow-hidden"
+              className="relative w-full max-w-md glass-card rounded-t-[3rem] sm:rounded-[3rem] p-8 shadow-2xl border-t border-astro-saffron/40"
             >
-              <div className="absolute -top-24 -left-24 w-48 h-48 bg-astro-saffron/10 rounded-full blur-3xl pointer-events-none" />
               <button onClick={() => setShowModal(false)} className="absolute top-8 right-8 p-2 rounded-full bg-white/5 text-gray-500 hover:text-white transition-colors">
                 <X className="w-5 h-5" />
               </button>
@@ -368,15 +322,14 @@ const App: React.FC = () => {
               <div className="flex flex-col items-center text-center">
                 <div className="w-16 h-16 bg-astro-saffron/10 rounded-3xl flex items-center justify-center text-astro-saffron mb-6 border border-astro-saffron/20 shadow-inner">
                   {modalType === 'insight' && <Sparkles className="w-8 h-8" />}
-                  {modalType === 'shop' && <ShoppingBasket className="w-8 h-8" />}
+                  {modalType === 'shop' && <ShoppingBag className="w-8 h-8" />}
                   {modalType === 'pooja' && <Flame className="w-8 h-8" />}
                   {modalType === 'language' && <Languages className="w-8 h-8" />}
                 </div>
                 
-                <h2 className="font-serif text-2xl text-white mb-2 uppercase tracking-[0.1em]">
+                <h2 className="font-serif text-2xl text-white mb-2 uppercase tracking-wide">
                   {modalType === 'insight' ? 'Cosmic Insight' : modalType === 'shop' ? 'Vedic Store' : modalType === 'pooja' ? 'Sacred Ritual' : 'Language'}
                 </h2>
-                <span className="text-astro-gold text-[10px] font-black uppercase tracking-[0.2em] mb-6">Starting at Rs 21*</span>
                 
                 {modalType === 'insight' && (
                   <div className="w-full mb-8">
@@ -392,7 +345,7 @@ const App: React.FC = () => {
                         "{sacredInsight}"
                       </motion.div>
                     ) : (
-                      <p className="text-gray-400 text-sm font-light">Enter your birth date in the sanctuary to align your destiny starting at Rs 21*.</p>
+                      <p className="text-gray-400 text-sm">Align your destiny by entering the birth date in the sanctuary portal.</p>
                     )}
                   </div>
                 )}
@@ -403,18 +356,12 @@ const App: React.FC = () => {
                       <button 
                         key={lang} 
                         onClick={() => { setSelectedLang(lang); setShowModal(false); }} 
-                        className={`py-3 rounded-2xl text-[10px] font-black uppercase transition-all tracking-wider ${selectedLang === lang ? 'bg-astro-saffron text-white shadow-lg saffron-glow' : 'bg-white/5 text-gray-400 border border-white/5'}`}
+                        className={`py-3 rounded-2xl text-[11px] font-bold uppercase transition-all tracking-wider ${selectedLang === lang ? 'bg-astro-saffron text-white shadow-lg saffron-glow' : 'bg-white/5 text-gray-400 border border-white/5'}`}
                       >
                         {lang}
                       </button>
                     ))}
                   </div>
-                )}
-
-                {(modalType === 'shop' || modalType === 'pooja') && (
-                  <p className="text-gray-400 text-sm font-light mb-8">
-                    Enter the full sanctuary portal to finalize your booking and access exclusive member pricing starting at Rs 21*.
-                  </p>
                 )}
                 
                 <button 
